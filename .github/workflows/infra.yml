@@ -36,5 +36,6 @@ jobs:
           aws mq describe-broker --broker-name blackbelt-rabbitmq-broker --region eu-west-1 || echo "RabbitMQ instance does not exist."
 
       - name: Create RabbitMQ instance
+        if: steps.check_rabbitmq.outputs.exist == 'false'
         run: |
           aws mq create-broker --broker-name blackbelt-rabbitmq-broker --engine-type RabbitMQ --engine-version 3.8.14 --blackbelt-id my-broker --host-instance-type mq.t3.micro --publicly-accessible --region eu-west-1
