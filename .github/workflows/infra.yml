@@ -32,7 +32,7 @@ jobs:
       - name: Check for RabbitMQ instance
         id: check_rabbitmq
         run: |
-          aws mq describe-broker --broker-name blackbelt-rabbitmq-broker --region eu-west-1 || echo "RabbitMQ instance does not exist."
+          aws mq describe-broker --broker-id blackbelt-rabbitmq-broker --region eu-west-1 || echo "RabbitMQ instance does not exist."
 
       - name: Create RabbitMQ instance
         if: steps.check_rabbitmq.outputs.exist == 'false'
