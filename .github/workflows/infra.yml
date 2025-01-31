@@ -30,7 +30,5 @@ jobs:
           aws elasticache create-cache-cluster --cache-cluster-id blackbelt-redis-cluster --cache-node-type cache.t3.micro --engine redis --num-cache-nodes 1 --engine-version 5.0.6 --cache-parameter-group default.redis5.0 --region eu-west-1
     
       - name: Create RabbitMQ instance
-        run: |
-          aws mq create-broker --broker-name blackbelt-rabbitmq-broker --engine-type RabbitMQ --engine-version 3.8.14 --blackbelt-id my-broker --host-instance-type mq.t3.micro --publicly-accessible --region eu-west-1
-          |
+        run: |                  
           aws mq create-broker --broker-name lackbelt-rabbitmq-broker --engine-type RabbitMQ --engine-version 3.8.14 --host-instance-type mq.t3.micro --deployment-mode SINGLE_INSTANCE --publicly-accessible --users '[{"username":"corekit,"password":"corekit"}]' --region eu-west-1
