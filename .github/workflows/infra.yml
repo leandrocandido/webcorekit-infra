@@ -28,8 +28,13 @@ jobs:
         if: steps.check_redis.outputs.exist == 'false'
         run: |
           aws elasticache create-cache-cluster --cache-cluster-id blackbelt-redis-cluster --cache-node-type cache.t3.micro --engine redis --num-cache-nodes 1 --engine-version 5.0.6 --cache-parameter-group default.redis5.0 --region eu-west-1
-    
+      - name: Check for RabbitMQ instance
+        id: check_rabbitmq
+        run: |
+          aws mq describe-broker --broker-id b-b6fa5738-6fa9-43c3-8dbb-90b87b53597e --region eu-west-1 || echo "RabbitMQ instance does not exist."
+          
       - name: Create RabbitMQ instance
+        if: steps.check_rabbitmq.outputs.exist == 'false'
         run: |                  
           aws mq create-broker --broker-name blackbelt-rabbitmq-broker --engine-type RabbitMQ --engine-version 3.12.13 --host-instance-type mq.t3.micro --deployment-mode SINGLE_INSTANCE --publicly-accessible --users '[{"Username":"corekit","Password":"corekit12345","ConsoleAccess":true,"Groups":[]}]' --region eu-west-1
 
