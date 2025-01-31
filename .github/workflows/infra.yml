@@ -28,12 +28,7 @@ jobs:
         if: steps.check_redis.outputs.exist == 'false'
         run: |
           aws elasticache create-cache-cluster --cache-cluster-id blackbelt-redis-cluster --cache-node-type cache.t3.micro --engine redis --num-cache-nodes 1 --engine-version 5.0.6 --cache-parameter-group default.redis5.0 --region eu-west-1
-
-      - name: Check for RabbitMQ instance
-        id: check_rabbitmq
-        run: |
-          aws mq describe-broker --broker-id blackbelt-rabbitmq-broker --region eu-west-1 || echo "RabbitMQ instance does not exist."
-
+    
       - name: Create RabbitMQ instance
         if: steps.check_rabbitmq.outputs.exist == 'false'
         run: |
