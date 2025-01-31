@@ -31,5 +31,5 @@ jobs:
     
       - name: Create RabbitMQ instance
         run: |                  
-          aws mq create-broker --broker-name blackbelt-rabbitmq-broker --engine-type RabbitMQ --engine-version 3.8.14 --host-instance-type mq.t3.micro --deployment-mode SINGLE_INSTANCE --publicly-accessible --users '[{"Username":"corekit","Password":"corekit12345","ConsoleAccess":true,"Groups":[]}]' --region eu-west-1
+          aws mq create-broker --broker-name blackbelt-rabbitmq-broker --engine-type RabbitMQ --engine-version 3.12.13 --host-instance-type mq.t3.micro --deployment-mode SINGLE_INSTANCE --publicly-accessible --users '[{"Username":"corekit","Password":"corekit12345","ConsoleAccess":true,"Groups":[]}]' --region eu-west-1
 
