@@ -1,9 +1,9 @@
-name: Infrastructure
+name: Create Infrastructure
 
 on:
   push:
-    branches:
-      - main
+    paths:
+      - 'infrastructure/**'
 
 jobs:
   create-infra:
@@ -18,12 +18,23 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-west-1
+          aws-region: your-region
+
+      - name: Check for Redis instance
+        id: check_redis
+        run: |
+          aws elasticache describe-cache-clusters --cache-cluster-id my-redis-cluster --region eu-west-1 || echo "Redis instance does not exist."
 
       - name: Create Redis instance
+        if: steps.check_redis.outputs.exist == 'false'
         run: |
           aws elasticache create-cache-cluster --cache-cluster-id blackbelt-redis-cluster --cache-node-type cache.t3.micro --engine redis --num-cache-nodes 1 --engine-version 5.0.6 --cache-parameter-group default.redis5.0 --region eu-west-1
 
+      - name: Check for RabbitMQ instance
+        id: check_rabbitmq
+        run: |
+          aws mq describe-broker --broker-name blackbelt-rabbitmq-broker --region eu-west-1 || echo "RabbitMQ instance does not exist."
+
       - name: Create RabbitMQ instance
-        run: |          
-          aws mq create-broker --broker-name blackbelt-rabbitmq-broker --engine-type RabbitMQ --engine-version 3.8.14 --host-instance-type mq.t3.micro --publicly-accessible --region eu-west-1
+        run: |
+          aws mq create-broker --broker-name blackbelt-rabbitmq-broker --engine-type RabbitMQ --engine-version 3.8.14 --blackbelt-id my-broker --host-instance-type mq.t3.micro --publicly-accessible --region eu-west-1
