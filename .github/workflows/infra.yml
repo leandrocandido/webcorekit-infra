@@ -22,7 +22,7 @@ jobs:
       - name: Check for Redis instance
         id: check_redis
         run: |
-          aws elasticache describe-cache-clusters --cache-cluster-id my-redis-cluster --region eu-west-1 || echo "Redis instance does not exist."
+          aws elasticache describe-cache-clusters --cache-cluster-id blackbelt-redis-cluster --region eu-west-1 || echo "Redis instance does not exist."
 
       - name: Create Redis instance
         if: steps.check_redis.outputs.exist == 'false'
