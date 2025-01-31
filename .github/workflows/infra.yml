@@ -2,8 +2,7 @@ name: Create Infrastructure
 
 on:
   push:
-    paths:
-      - 'infrastructure/**'
+    branches: ["main"]
 
 jobs:
   create-infra:
